@@ -16,7 +16,7 @@ export default function DashboardReports() {
     enabled: !!account?.id,
     queryFn: async () => {
       const since = subDays(new Date(), 30).toISOString();
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("transactions")
         .select("amount, status, payment_method, created_at, fee_amount")
         .eq("account_id", account!.id)
@@ -32,7 +32,7 @@ export default function DashboardReports() {
     enabled: !!account?.id,
     queryFn: async () => {
       const since = subDays(new Date(), 30).toISOString();
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("disbursements")
         .select("amount, status, created_at")
         .eq("account_id", account!.id)

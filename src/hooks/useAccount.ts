@@ -7,13 +7,13 @@ export function useAccount() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("accounts")
         .select("*")
         .eq("user_id", user.id)
         .single();
       if (error) throw error;
-      return data;
+      return data as any;
     },
   });
 }

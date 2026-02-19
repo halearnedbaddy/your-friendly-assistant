@@ -21,7 +21,7 @@ export default function DashboardDisbursement() {
     queryKey: ["disbursements", account?.id],
     enabled: !!account?.id,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("disbursements")
         .select("*")
         .eq("account_id", account!.id)

@@ -35,7 +35,7 @@ export default function DashboardSupport() {
     queryKey: ["tickets", account?.id],
     enabled: !!account?.id,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("support_tickets")
         .select("*")
         .eq("account_id", account!.id)
@@ -49,7 +49,7 @@ export default function DashboardSupport() {
     mutationFn: async () => {
       if (!subject.trim()) throw new Error("Subject is required");
       if (!description.trim()) throw new Error("Description is required");
-      const { error } = await supabase.from("support_tickets").insert({
+      const { error } = await (supabase as any).from("support_tickets").insert({
         account_id: account!.id,
         subject: subject.trim(),
         description: description.trim(),

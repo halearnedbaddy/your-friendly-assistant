@@ -15,7 +15,7 @@ const DashboardOverview = () => {
     queryKey: ["overview-transactions", account?.id],
     enabled: !!account?.id,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("transactions")
         .select("*")
         .eq("account_id", account!.id)
@@ -30,7 +30,7 @@ const DashboardOverview = () => {
     queryKey: ["overview-holds", account?.id],
     enabled: !!account?.id,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("holds")
         .select("amount, status")
         .eq("account_id", account!.id)
@@ -44,7 +44,7 @@ const DashboardOverview = () => {
     queryKey: ["overview-disbursements", account?.id],
     enabled: !!account?.id,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("disbursements")
         .select("amount, status")
         .eq("account_id", account!.id)
@@ -69,7 +69,7 @@ const DashboardOverview = () => {
   const retryMutation = useMutation({
     mutationFn: async (txnId: string) => {
       // In production this would trigger re-processing via API
-      await supabase.from("transactions").update({ status: "PENDING" }).eq("id", txnId);
+      await (supabase as any).from("transactions").update({ status: "PENDING" }).eq("id", txnId);
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["overview-transactions"] }),
   });

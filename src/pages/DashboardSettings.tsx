@@ -28,7 +28,7 @@ const DashboardSettings = () => {
 
   const saveMutation = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("accounts")
         .update({
           callback_url: callbackUrl,
@@ -49,7 +49,7 @@ const DashboardSettings = () => {
   const regenSandboxKey = useMutation({
     mutationFn: async () => {
       const newKey = "sk_test_kzh_" + crypto.randomUUID().replace(/-/g, "").slice(0, 16);
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("accounts")
         .update({ sandbox_api_key: newKey })
         .eq("id", account!.id);

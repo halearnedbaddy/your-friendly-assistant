@@ -26,7 +26,7 @@ export default function AdminTransactions() {
   const { data: transactions = [], isLoading, refetch } = useQuery({
     queryKey: ["admin-all-transactions", statusFilter, methodFilter],
     queryFn: async () => {
-      let q = supabase
+      let q = (supabase as any)
         .from("transactions")
         .select("*, accounts(business_name, email)")
         .order("created_at", { ascending: false })

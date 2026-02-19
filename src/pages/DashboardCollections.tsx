@@ -29,14 +29,14 @@ export default function DashboardCollections() {
     queryKey: ["transactions", account?.id, statusFilter, methodFilter],
     enabled: !!account?.id,
     queryFn: async () => {
-      let q = supabase
+      let q = (supabase as any)
         .from("transactions")
         .select("*")
         .eq("account_id", account!.id)
         .order("created_at", { ascending: false })
         .limit(100);
-      if (statusFilter !== "ALL") q = q.eq("status", statusFilter as "PENDING" | "SUCCESS" | "FAILED" | "HELD" | "RELEASED" | "REFUNDED");
-      if (methodFilter !== "ALL") q = q.eq("payment_method", methodFilter as "MPESA" | "AIRTEL" | "CARD");
+      if (statusFilter !== "ALL") q = q.eq("status", statusFilter);
+      if (methodFilter !== "ALL") q = q.eq("payment_method", methodFilter);
       const { data, error } = await q;
       if (error) throw error;
       return data ?? [];
