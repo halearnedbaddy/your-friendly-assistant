@@ -45,6 +45,7 @@ export default function Signup() {
       password,
       options: {
         data: { business_name: businessName },
+        emailRedirectTo: `${window.location.origin}/dashboard`,
       },
     });
     setLoading(false);
