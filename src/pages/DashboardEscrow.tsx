@@ -25,7 +25,7 @@ export default function DashboardEscrow() {
     queryKey: ["holds", account?.id, filter],
     enabled: !!account?.id,
     queryFn: async () => {
-      let q = supabase
+      let q = (supabase as any)
         .from("holds")
         .select("*, transactions(phone, payment_method, description)")
         .eq("account_id", account!.id)
@@ -39,7 +39,7 @@ export default function DashboardEscrow() {
 
   const releaseMutation = useMutation({
     mutationFn: async (holdId: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("holds")
         .update({ status: "RELEASED", released_at: new Date().toISOString() })
         .eq("id", holdId);
@@ -54,7 +54,7 @@ export default function DashboardEscrow() {
 
   const cancelMutation = useMutation({
     mutationFn: async (holdId: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("holds")
         .update({ status: "CANCELLED", cancelled_at: new Date().toISOString(), cancel_reason: "Manual cancellation" })
         .eq("id", holdId);

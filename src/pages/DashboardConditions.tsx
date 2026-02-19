@@ -35,7 +35,7 @@ export default function DashboardConditions() {
     queryKey: ["conditions", account?.id],
     enabled: !!account?.id,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("conditions")
         .select("*")
         .eq("account_id", account!.id)
@@ -48,7 +48,7 @@ export default function DashboardConditions() {
   const createMutation = useMutation({
     mutationFn: async () => {
       if (!name.trim()) throw new Error("Name is required");
-      const { error } = await supabase.from("conditions").insert({
+      const { error } = await (supabase as any).from("conditions").insert({
         account_id: account!.id,
         name: name.trim(),
         type,
@@ -69,7 +69,7 @@ export default function DashboardConditions() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase.from("conditions").delete().eq("id", id);
+      const { error } = await (supabase as any).from("conditions").delete().eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => {

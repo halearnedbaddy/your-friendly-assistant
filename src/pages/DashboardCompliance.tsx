@@ -47,7 +47,7 @@ const DashboardCompliance = () => {
     queryKey: ["kyc", account?.id],
     enabled: !!account?.id,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("kyc_documents")
         .select("*")
         .eq("account_id", account!.id)
@@ -107,10 +107,10 @@ const DashboardCompliance = () => {
         status: asDraft ? ("DRAFT" as const) : ("PENDING" as const),
       };
       if (kyc?.id) {
-        const { error } = await supabase.from("kyc_documents").update(payload).eq("id", kyc.id);
+        const { error } = await (supabase as any).from("kyc_documents").update(payload).eq("id", kyc.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from("kyc_documents").insert(payload);
+        const { error } = await (supabase as any).from("kyc_documents").insert(payload);
         if (error) throw error;
       }
     },

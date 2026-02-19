@@ -34,6 +34,7 @@ import {
   LogOut,
   User,
   ChevronDown,
+  Shield,
 } from "lucide-react";
 import { useAccount } from "@/hooks/useAccount";
 import { useAuth } from "@/contexts/AuthContext";

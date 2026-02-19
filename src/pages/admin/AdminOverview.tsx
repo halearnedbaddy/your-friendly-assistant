@@ -11,7 +11,7 @@ export default function AdminOverview() {
   const { data: accounts = [] } = useQuery({
     queryKey: ["admin-accounts"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("accounts")
         .select("id, status, business_name, created_at");
       if (error) throw error;
@@ -23,7 +23,7 @@ export default function AdminOverview() {
   const { data: pendingKyc = [] } = useQuery({
     queryKey: ["admin-pending-kyc"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("kyc_documents")
         .select("*, accounts(business_name, email)")
         .eq("status", "PENDING")
@@ -38,7 +38,7 @@ export default function AdminOverview() {
   const { data: transactions = [] } = useQuery({
     queryKey: ["admin-transactions"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("transactions")
         .select("amount, fee_amount, status, created_at")
         .eq("status", "SUCCESS");
@@ -51,7 +51,7 @@ export default function AdminOverview() {
   const { data: recentTxns = [] } = useQuery({
     queryKey: ["admin-recent-transactions"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("transactions")
         .select("*, accounts(business_name)")
         .order("created_at", { ascending: false })

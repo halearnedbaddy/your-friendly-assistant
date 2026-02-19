@@ -23,12 +23,12 @@ export default function AdminBusinesses() {
   const { data: accounts = [], isLoading, refetch } = useQuery({
     queryKey: ["admin-all-accounts", statusFilter],
     queryFn: async () => {
-      let q = supabase
+      let q = (supabase as any)
         .from("accounts")
         .select("*, kyc_documents(status)")
         .order("created_at", { ascending: false });
       if (statusFilter !== "ALL") {
-        q = q.eq("status", statusFilter);
+        q = q.eq("status", statusFilter as any);
       }
       const { data, error } = await q;
       if (error) throw error;

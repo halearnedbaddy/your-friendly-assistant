@@ -26,7 +26,7 @@ export default function AdminCompliance() {
   const { data: kycList = [], isLoading } = useQuery({
     queryKey: ["admin-kyc-list"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("kyc_documents")
         .select("*, accounts(id, business_name, email, status)")
         .order("created_at", { ascending: false });
@@ -41,7 +41,7 @@ export default function AdminCompliance() {
       if (!kyc) throw new Error("KYC not found");
 
       // Update KYC status
-      const { error: kycError } = await supabase
+      const { error: kycError } = await (supabase as any)
         .from("kyc_documents")
         .update({
           status: "APPROVED",
@@ -52,7 +52,7 @@ export default function AdminCompliance() {
       if (kycError) throw kycError;
 
       // Update account status to APPROVED
-      const { error: accountError } = await supabase
+      const { error: accountError } = await (supabase as any)
         .from("accounts")
         .update({ status: "APPROVED" })
         .eq("id", kyc.account_id);
@@ -73,7 +73,7 @@ export default function AdminCompliance() {
       if (!kyc) throw new Error("KYC not found");
 
       // Update KYC status
-      const { error: kycError } = await supabase
+      const { error: kycError } = await (supabase as any)
         .from("kyc_documents")
         .update({
           status: "REJECTED",
@@ -85,7 +85,7 @@ export default function AdminCompliance() {
       if (kycError) throw kycError;
 
       // Update account status to REJECTED
-      const { error: accountError } = await supabase
+      const { error: accountError } = await (supabase as any)
         .from("accounts")
         .update({ status: "REJECTED" })
         .eq("id", kyc.account_id);

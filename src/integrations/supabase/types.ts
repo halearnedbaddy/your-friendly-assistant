@@ -14,409 +14,864 @@ export type Database = {
   }
   public: {
     Tables: {
-      accounts: {
+      admin_logs: {
         Row: {
-          api_key_last_four: string | null
-          business_name: string
-          business_type: string | null
-          callback_url: string | null
-          created_at: string
-          email: string
+          action: string
+          admin_id: string
+          created_at: string | null
+          details: Json | null
           id: string
-          ip_whitelist: string[] | null
-          live_api_key_hash: string | null
-          min_payout_amount: number | null
-          payout_phone: string | null
-          payout_verified: boolean | null
-          sandbox_api_key: string | null
-          status: Database["public"]["Enums"]["account_status"]
-          updated_at: string
-          user_id: string
-          webhook_url: string | null
+          ip_address: string | null
+          target_user_id: string | null
+          user_agent: string | null
         }
         Insert: {
-          api_key_last_four?: string | null
-          business_name?: string
-          business_type?: string | null
-          callback_url?: string | null
-          created_at?: string
-          email: string
+          action: string
+          admin_id: string
+          created_at?: string | null
+          details?: Json | null
           id?: string
-          ip_whitelist?: string[] | null
-          live_api_key_hash?: string | null
-          min_payout_amount?: number | null
-          payout_phone?: string | null
-          payout_verified?: boolean | null
-          sandbox_api_key?: string | null
-          status?: Database["public"]["Enums"]["account_status"]
-          updated_at?: string
-          user_id: string
-          webhook_url?: string | null
+          ip_address?: string | null
+          target_user_id?: string | null
+          user_agent?: string | null
         }
         Update: {
-          api_key_last_four?: string | null
-          business_name?: string
-          business_type?: string | null
-          callback_url?: string | null
-          created_at?: string
-          email?: string
+          action?: string
+          admin_id?: string
+          created_at?: string | null
+          details?: Json | null
           id?: string
-          ip_whitelist?: string[] | null
-          live_api_key_hash?: string | null
-          min_payout_amount?: number | null
-          payout_phone?: string | null
-          payout_verified?: boolean | null
-          sandbox_api_key?: string | null
-          status?: Database["public"]["Enums"]["account_status"]
-          updated_at?: string
-          user_id?: string
-          webhook_url?: string | null
+          ip_address?: string | null
+          target_user_id?: string | null
+          user_agent?: string | null
         }
         Relationships: []
       }
-      conditions: {
+      audit_logs: {
         Row: {
-          account_id: string
-          config: Json | null
-          created_at: string
+          action: string
+          created_at: string | null
+          details: Json | null
+          entity: string
+          entity_id: string | null
           id: string
-          is_default: boolean | null
-          name: string
-          type: Database["public"]["Enums"]["condition_type"]
+          ip_address: string | null
+          success: boolean | null
+          user_agent: string | null
+          user_id: string | null
         }
         Insert: {
-          account_id: string
-          config?: Json | null
-          created_at?: string
+          action: string
+          created_at?: string | null
+          details?: Json | null
+          entity: string
+          entity_id?: string | null
           id?: string
-          is_default?: boolean | null
-          name: string
-          type?: Database["public"]["Enums"]["condition_type"]
+          ip_address?: string | null
+          success?: boolean | null
+          user_agent?: string | null
+          user_id?: string | null
         }
         Update: {
-          account_id?: string
-          config?: Json | null
-          created_at?: string
+          action?: string
+          created_at?: string | null
+          details?: Json | null
+          entity?: string
+          entity_id?: string | null
           id?: string
-          is_default?: boolean | null
-          name?: string
-          type?: Database["public"]["Enums"]["condition_type"]
+          ip_address?: string | null
+          success?: boolean | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      dispute_messages: {
+        Row: {
+          created_at: string | null
+          dispute_id: string
+          id: string
+          is_admin: boolean | null
+          message: string
+          sender_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          dispute_id: string
+          id?: string
+          is_admin?: boolean | null
+          message: string
+          sender_id: string
+        }
+        Update: {
+          created_at?: string | null
+          dispute_id?: string
+          id?: string
+          is_admin?: boolean | null
+          message?: string
+          sender_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "conditions_account_id_fkey"
-            columns: ["account_id"]
+            foreignKeyName: "dispute_messages_dispute_id_fkey"
+            columns: ["dispute_id"]
             isOneToOne: false
-            referencedRelation: "accounts"
+            referencedRelation: "disputes"
             referencedColumns: ["id"]
           },
         ]
       }
-      disbursements: {
+      disputes: {
         Row: {
-          account_id: string
-          amount: number
-          completed_at: string | null
-          created_at: string
-          hold_id: string | null
+          created_at: string | null
           id: string
-          notes: string | null
-          provider_ref: string | null
-          recipient_name: string | null
-          recipient_phone: string | null
-          status: Database["public"]["Enums"]["disbursement_status"]
+          opened_by: string
+          reason: string
+          resolution: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          status: string | null
+          transaction_id: string
+          updated_at: string | null
         }
         Insert: {
-          account_id: string
-          amount: number
-          completed_at?: string | null
-          created_at?: string
-          hold_id?: string | null
+          created_at?: string | null
           id?: string
-          notes?: string | null
-          provider_ref?: string | null
-          recipient_name?: string | null
-          recipient_phone?: string | null
-          status?: Database["public"]["Enums"]["disbursement_status"]
+          opened_by: string
+          reason: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string | null
+          transaction_id: string
+          updated_at?: string | null
         }
         Update: {
-          account_id?: string
-          amount?: number
-          completed_at?: string | null
-          created_at?: string
-          hold_id?: string | null
+          created_at?: string | null
           id?: string
-          notes?: string | null
-          provider_ref?: string | null
-          recipient_name?: string | null
-          recipient_phone?: string | null
-          status?: Database["public"]["Enums"]["disbursement_status"]
-        }
-        Relationships: [
-          {
-            foreignKeyName: "disbursements_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "disbursements_hold_id_fkey"
-            columns: ["hold_id"]
-            isOneToOne: false
-            referencedRelation: "holds"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      holds: {
-        Row: {
-          account_id: string
-          amount: number
-          cancel_reason: string | null
-          cancelled_at: string | null
-          condition_id: string | null
-          condition_type: Database["public"]["Enums"]["condition_type"] | null
-          created_at: string
-          expiry_at: string | null
-          id: string
-          released_at: string | null
-          status: Database["public"]["Enums"]["hold_status"]
-          transaction_id: string
-        }
-        Insert: {
-          account_id: string
-          amount: number
-          cancel_reason?: string | null
-          cancelled_at?: string | null
-          condition_id?: string | null
-          condition_type?: Database["public"]["Enums"]["condition_type"] | null
-          created_at?: string
-          expiry_at?: string | null
-          id?: string
-          released_at?: string | null
-          status?: Database["public"]["Enums"]["hold_status"]
-          transaction_id: string
-        }
-        Update: {
-          account_id?: string
-          amount?: number
-          cancel_reason?: string | null
-          cancelled_at?: string | null
-          condition_id?: string | null
-          condition_type?: Database["public"]["Enums"]["condition_type"] | null
-          created_at?: string
-          expiry_at?: string | null
-          id?: string
-          released_at?: string | null
-          status?: Database["public"]["Enums"]["hold_status"]
+          opened_by?: string
+          reason?: string
+          resolution?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          status?: string | null
           transaction_id?: string
+          updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "holds_account_id_fkey"
-            columns: ["account_id"]
-            isOneToOne: false
-            referencedRelation: "accounts"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "holds_transaction_id_fkey"
-            columns: ["transaction_id"]
-            isOneToOne: false
-            referencedRelation: "transactions"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
-      kyc_documents: {
+      escrow_wallets: {
         Row: {
-          account_id: string
-          address: string | null
-          agreement_pdf_url: string | null
-          agreement_signed: boolean | null
-          business_cert_url: string | null
-          created_at: string
-          director_name: string | null
-          expected_volume: string | null
+          auto_release_date: string | null
+          created_at: string | null
+          currency: string | null
+          gross_amount: number
+          id: string
+          locked_at: string | null
+          net_amount: number
+          order_id: string | null
+          platform_fee: number
+          released_at: string | null
+          released_by: string | null
+          requires_buyer_confirmation: boolean | null
+          status: string | null
+          updated_at: string | null
+          wallet_ref: string
+        }
+        Insert: {
+          auto_release_date?: string | null
+          created_at?: string | null
+          currency?: string | null
+          gross_amount: number
+          id?: string
+          locked_at?: string | null
+          net_amount: number
+          order_id?: string | null
+          platform_fee: number
+          released_at?: string | null
+          released_by?: string | null
+          requires_buyer_confirmation?: boolean | null
+          status?: string | null
+          updated_at?: string | null
+          wallet_ref: string
+        }
+        Update: {
+          auto_release_date?: string | null
+          created_at?: string | null
+          currency?: string | null
+          gross_amount?: number
+          id?: string
+          locked_at?: string | null
+          net_amount?: number
+          order_id?: string | null
+          platform_fee?: number
+          released_at?: string | null
+          released_by?: string | null
+          requires_buyer_confirmation?: boolean | null
+          status?: string | null
+          updated_at?: string | null
+          wallet_ref?: string
+        }
+        Relationships: []
+      }
+      ledger_entries: {
+        Row: {
+          amount: number
+          created_at: string | null
+          credit_account: string
+          credit_balance_after: number | null
+          credit_balance_before: number | null
+          debit_account: string
+          debit_balance_after: number | null
+          debit_balance_before: number | null
+          description: string | null
+          entry_ref: string
+          id: string
+          metadata: Json | null
+          order_id: string | null
+          transaction_type: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          credit_account: string
+          credit_balance_after?: number | null
+          credit_balance_before?: number | null
+          debit_account: string
+          debit_balance_after?: number | null
+          debit_balance_before?: number | null
+          description?: string | null
+          entry_ref: string
+          id?: string
+          metadata?: Json | null
+          order_id?: string | null
+          transaction_type: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          credit_account?: string
+          credit_balance_after?: number | null
+          credit_balance_before?: number | null
+          debit_account?: string
+          debit_balance_after?: number | null
+          debit_balance_before?: number | null
+          description?: string | null
+          entry_ref?: string
+          id?: string
+          metadata?: Json | null
+          order_id?: string | null
+          transaction_type?: string
+        }
+        Relationships: []
+      }
+      mpesa_transactions: {
+        Row: {
+          amount: number | null
+          callback_data: Json | null
+          checkout_request_id: string | null
+          completed_at: string | null
+          conversation_id: string | null
+          created_at: string | null
+          id: string
+          merchant_request_id: string | null
+          mpesa_receipt_number: string | null
+          order_id: string | null
+          phone_number: string | null
+          raw_request: Json | null
+          raw_response: Json | null
+          result_code: string | null
+          result_desc: string | null
+          status: string | null
+          transaction_type: string | null
+        }
+        Insert: {
+          amount?: number | null
+          callback_data?: Json | null
+          checkout_request_id?: string | null
+          completed_at?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          merchant_request_id?: string | null
+          mpesa_receipt_number?: string | null
+          order_id?: string | null
+          phone_number?: string | null
+          raw_request?: Json | null
+          raw_response?: Json | null
+          result_code?: string | null
+          result_desc?: string | null
+          status?: string | null
+          transaction_type?: string | null
+        }
+        Update: {
+          amount?: number | null
+          callback_data?: Json | null
+          checkout_request_id?: string | null
+          completed_at?: string | null
+          conversation_id?: string | null
+          created_at?: string | null
+          id?: string
+          merchant_request_id?: string | null
+          mpesa_receipt_number?: string | null
+          order_id?: string | null
+          phone_number?: string | null
+          raw_request?: Json | null
+          raw_response?: Json | null
+          result_code?: string | null
+          result_desc?: string | null
+          status?: string | null
+          transaction_type?: string | null
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          created_at: string | null
+          data: Json | null
+          id: string
+          is_read: boolean | null
+          message: string
+          read_at: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message: string
+          read_at?: string | null
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          data?: Json | null
+          id?: string
+          is_read?: boolean | null
+          message?: string
+          read_at?: string | null
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      payment_links: {
+        Row: {
+          amount: number
+          created_at: string | null
+          currency: string | null
+          description: string | null
           expires_at: string | null
           id: string
-          id_document_url: string | null
-          kra_pin: string | null
-          phone: string | null
-          rejection_reason: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: Database["public"]["Enums"]["kyc_status"]
-          updated_at: string
+          product_id: string | null
+          seller_id: string
+          status: string | null
+          title: string
+          updated_at: string | null
         }
         Insert: {
-          account_id: string
-          address?: string | null
-          agreement_pdf_url?: string | null
-          agreement_signed?: boolean | null
-          business_cert_url?: string | null
-          created_at?: string
-          director_name?: string | null
-          expected_volume?: string | null
+          amount: number
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
           expires_at?: string | null
           id?: string
-          id_document_url?: string | null
-          kra_pin?: string | null
-          phone?: string | null
-          rejection_reason?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: Database["public"]["Enums"]["kyc_status"]
-          updated_at?: string
+          product_id?: string | null
+          seller_id: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
         }
         Update: {
-          account_id?: string
-          address?: string | null
-          agreement_pdf_url?: string | null
-          agreement_signed?: boolean | null
-          business_cert_url?: string | null
-          created_at?: string
-          director_name?: string | null
-          expected_volume?: string | null
+          amount?: number
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
           expires_at?: string | null
           id?: string
-          id_document_url?: string | null
-          kra_pin?: string | null
-          phone?: string | null
-          rejection_reason?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: Database["public"]["Enums"]["kyc_status"]
-          updated_at?: string
+          product_id?: string | null
+          seller_id?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "kyc_documents_account_id_fkey"
-            columns: ["account_id"]
+            foreignKeyName: "payment_links_product_id_fkey"
+            columns: ["product_id"]
             isOneToOne: false
-            referencedRelation: "accounts"
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
       }
-      support_tickets: {
+      platform_accounts: {
         Row: {
-          account_id: string
-          assigned_to: string | null
-          created_at: string
-          description: string
+          account_type: string
+          balance: number | null
+          created_at: string | null
+          currency: string | null
+          description: string | null
           id: string
-          priority: Database["public"]["Enums"]["ticket_priority"]
-          resolved_at: string | null
-          status: Database["public"]["Enums"]["ticket_status"]
-          subject: string
-          updated_at: string
+          updated_at: string | null
         }
         Insert: {
-          account_id: string
-          assigned_to?: string | null
-          created_at?: string
-          description?: string
+          account_type: string
+          balance?: number | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
           id?: string
-          priority?: Database["public"]["Enums"]["ticket_priority"]
-          resolved_at?: string | null
-          status?: Database["public"]["Enums"]["ticket_status"]
-          subject: string
-          updated_at?: string
+          updated_at?: string | null
         }
         Update: {
-          account_id?: string
-          assigned_to?: string | null
-          created_at?: string
-          description?: string
+          account_type?: string
+          balance?: number | null
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
           id?: string
-          priority?: Database["public"]["Enums"]["ticket_priority"]
-          resolved_at?: string | null
-          status?: Database["public"]["Enums"]["ticket_status"]
-          subject?: string
-          updated_at?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          created_at: string | null
+          currency: string | null
+          description: string | null
+          id: string
+          images: string[] | null
+          is_available: boolean | null
+          name: string
+          price: number | null
+          status: Database["public"]["Enums"]["product_status"] | null
+          stock: number | null
+          store_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          is_available?: boolean | null
+          name: string
+          price?: number | null
+          status?: Database["public"]["Enums"]["product_status"] | null
+          stock?: number | null
+          store_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          currency?: string | null
+          description?: string | null
+          id?: string
+          images?: string[] | null
+          is_available?: boolean | null
+          name?: string
+          price?: number | null
+          status?: Database["public"]["Enums"]["product_status"] | null
+          stock?: number | null
+          store_id?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "support_tickets_account_id_fkey"
-            columns: ["account_id"]
+            foreignKeyName: "products_store_id_fkey"
+            columns: ["store_id"]
             isOneToOne: false
-            referencedRelation: "accounts"
+            referencedRelation: "stores"
             referencedColumns: ["id"]
           },
         ]
+      }
+      profiles: {
+        Row: {
+          account_status: Database["public"]["Enums"]["account_status"] | null
+          avatar_url: string | null
+          business_address: string | null
+          business_name: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          is_verified: boolean | null
+          last_login: string | null
+          name: string
+          phone: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          account_status?: Database["public"]["Enums"]["account_status"] | null
+          avatar_url?: string | null
+          business_address?: string | null
+          business_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          is_verified?: boolean | null
+          last_login?: string | null
+          name: string
+          phone?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          account_status?: Database["public"]["Enums"]["account_status"] | null
+          avatar_url?: string | null
+          business_address?: string | null
+          business_name?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          is_verified?: boolean | null
+          last_login?: string | null
+          name?: string
+          phone?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      seller_profiles: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_verified: boolean | null
+          rating: number | null
+          total_reviews: number | null
+          total_sales: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_verified?: boolean | null
+          rating?: number | null
+          total_reviews?: number | null
+          total_sales?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_verified?: boolean | null
+          rating?: number | null
+          total_reviews?: number | null
+          total_sales?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      social_accounts: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_scanned_at: string | null
+          page_id: string | null
+          page_url: string
+          platform: Database["public"]["Enums"]["social_platform"]
+          scan_status: string | null
+          store_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_scanned_at?: string | null
+          page_id?: string | null
+          page_url: string
+          platform: Database["public"]["Enums"]["social_platform"]
+          scan_status?: string | null
+          store_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_scanned_at?: string | null
+          page_id?: string | null
+          page_url?: string
+          platform?: Database["public"]["Enums"]["social_platform"]
+          scan_status?: string | null
+          store_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_accounts_store_id_fkey"
+            columns: ["store_id"]
+            isOneToOne: false
+            referencedRelation: "stores"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stores: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          id: string
+          logo: string | null
+          name: string
+          seller_id: string
+          slug: string
+          status: Database["public"]["Enums"]["store_status"] | null
+          updated_at: string | null
+          visibility: string | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          id?: string
+          logo?: string | null
+          name: string
+          seller_id: string
+          slug: string
+          status?: Database["public"]["Enums"]["store_status"] | null
+          updated_at?: string | null
+          visibility?: string | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          id?: string
+          logo?: string | null
+          name?: string
+          seller_id?: string
+          slug?: string
+          status?: Database["public"]["Enums"]["store_status"] | null
+          updated_at?: string | null
+          visibility?: string | null
+        }
+        Relationships: []
       }
       transactions: {
         Row: {
-          account_id: string
+          accepted_at: string | null
           amount: number
+          auto_release_at: string | null
+          buyer_address: string | null
+          buyer_confirmed_at: string | null
+          buyer_email: string | null
+          buyer_id: string | null
+          buyer_name: string | null
+          buyer_phone: string | null
+          cancelled_at: string | null
           completed_at: string | null
-          created_at: string
-          currency: string
-          description: string | null
-          fee_amount: number | null
-          fee_percentage: number | null
+          courier_name: string | null
+          created_at: string | null
+          currency: string | null
+          delivered_at: string | null
+          delivery_proof_urls: string[] | null
+          escrow_status: string | null
+          escrow_wallet_id: string | null
+          expires_at: string | null
           id: string
-          payment_method: Database["public"]["Enums"]["payment_method"]
-          phone: string | null
-          provider_ref: string | null
-          status: Database["public"]["Enums"]["transaction_status"]
+          item_description: string | null
+          item_images: string[] | null
+          item_name: string
+          paid_at: string | null
+          payment_method: string | null
+          payment_reference: string | null
+          platform_fee: number | null
+          product_id: string | null
+          quantity: number | null
+          refunded_at: string | null
+          seller_id: string
+          seller_payout: number | null
+          shipped_at: string | null
+          status: Database["public"]["Enums"]["transaction_status"] | null
+          tracking_number: string | null
+          updated_at: string | null
         }
         Insert: {
-          account_id: string
+          accepted_at?: string | null
           amount: number
+          auto_release_at?: string | null
+          buyer_address?: string | null
+          buyer_confirmed_at?: string | null
+          buyer_email?: string | null
+          buyer_id?: string | null
+          buyer_name?: string | null
+          buyer_phone?: string | null
+          cancelled_at?: string | null
           completed_at?: string | null
-          created_at?: string
-          currency?: string
-          description?: string | null
-          fee_amount?: number | null
-          fee_percentage?: number | null
-          id?: string
-          payment_method?: Database["public"]["Enums"]["payment_method"]
-          phone?: string | null
-          provider_ref?: string | null
-          status?: Database["public"]["Enums"]["transaction_status"]
+          courier_name?: string | null
+          created_at?: string | null
+          currency?: string | null
+          delivered_at?: string | null
+          delivery_proof_urls?: string[] | null
+          escrow_status?: string | null
+          escrow_wallet_id?: string | null
+          expires_at?: string | null
+          id: string
+          item_description?: string | null
+          item_images?: string[] | null
+          item_name: string
+          paid_at?: string | null
+          payment_method?: string | null
+          payment_reference?: string | null
+          platform_fee?: number | null
+          product_id?: string | null
+          quantity?: number | null
+          refunded_at?: string | null
+          seller_id: string
+          seller_payout?: number | null
+          shipped_at?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"] | null
+          tracking_number?: string | null
+          updated_at?: string | null
         }
         Update: {
-          account_id?: string
+          accepted_at?: string | null
           amount?: number
+          auto_release_at?: string | null
+          buyer_address?: string | null
+          buyer_confirmed_at?: string | null
+          buyer_email?: string | null
+          buyer_id?: string | null
+          buyer_name?: string | null
+          buyer_phone?: string | null
+          cancelled_at?: string | null
           completed_at?: string | null
-          created_at?: string
-          currency?: string
-          description?: string | null
-          fee_amount?: number | null
-          fee_percentage?: number | null
+          courier_name?: string | null
+          created_at?: string | null
+          currency?: string | null
+          delivered_at?: string | null
+          delivery_proof_urls?: string[] | null
+          escrow_status?: string | null
+          escrow_wallet_id?: string | null
+          expires_at?: string | null
           id?: string
-          payment_method?: Database["public"]["Enums"]["payment_method"]
-          phone?: string | null
-          provider_ref?: string | null
-          status?: Database["public"]["Enums"]["transaction_status"]
+          item_description?: string | null
+          item_images?: string[] | null
+          item_name?: string
+          paid_at?: string | null
+          payment_method?: string | null
+          payment_reference?: string | null
+          platform_fee?: number | null
+          product_id?: string | null
+          quantity?: number | null
+          refunded_at?: string | null
+          seller_id?: string
+          seller_payout?: number | null
+          shipped_at?: string | null
+          status?: Database["public"]["Enums"]["transaction_status"] | null
+          tracking_number?: string | null
+          updated_at?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "transactions_account_id_fkey"
-            columns: ["account_id"]
+            foreignKeyName: "transactions_product_id_fkey"
+            columns: ["product_id"]
             isOneToOne: false
-            referencedRelation: "accounts"
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
       }
       user_roles: {
         Row: {
+          created_at: string | null
           id: string
           role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Insert: {
+          created_at?: string | null
           id?: string
-          role?: Database["public"]["Enums"]["app_role"]
+          role: Database["public"]["Enums"]["app_role"]
           user_id: string
         }
         Update: {
+          created_at?: string | null
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wallet_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          payment_method: string | null
+          reference: string
+          status: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          payment_method?: string | null
+          reference: string
+          status?: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          payment_method?: string | null
+          reference?: string
+          status?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      wallets: {
+        Row: {
+          available_balance: number | null
+          created_at: string | null
+          currency: string | null
+          id: string
+          pending_balance: number | null
+          total_earned: number | null
+          total_spent: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          available_balance?: number | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          pending_balance?: number | null
+          total_earned?: number | null
+          total_spent?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          available_balance?: number | null
+          created_at?: string | null
+          currency?: string | null
+          id?: string
+          pending_balance?: number | null
+          total_earned?: number | null
+          total_spent?: number | null
+          updated_at?: string | null
           user_id?: string
         }
         Relationships: []
@@ -435,32 +890,23 @@ export type Database = {
       }
     }
     Enums: {
-      account_status:
-        | "EMAIL_UNVERIFIED"
-        | "EMAIL_VERIFIED"
-        | "PENDING"
-        | "APPROVED"
-        | "REJECTED"
-        | "SUSPENDED"
-      app_role: "admin" | "user"
-      condition_type:
-        | "CLIENT_APPROVAL"
-        | "DELIVERY_CONFIRM"
-        | "TIMER"
-        | "CUSTOM"
-      disbursement_status: "PENDING" | "PROCESSING" | "COMPLETED" | "FAILED"
-      hold_status: "ACTIVE" | "RELEASED" | "CANCELLED" | "EXPIRED"
-      kyc_status: "DRAFT" | "PENDING" | "APPROVED" | "REJECTED"
-      payment_method: "MPESA" | "AIRTEL" | "CARD"
-      ticket_priority: "LOW" | "MEDIUM" | "HIGH" | "URGENT"
-      ticket_status: "OPEN" | "IN_PROGRESS" | "RESOLVED" | "CLOSED"
+      account_status: "active" | "suspended" | "pending_verification"
+      app_role: "admin" | "seller" | "buyer"
+      product_status: "draft" | "published" | "archived"
+      social_platform: "instagram" | "facebook" | "linkedin"
+      store_status: "inactive" | "active" | "frozen"
       transaction_status:
-        | "PENDING"
-        | "SUCCESS"
-        | "FAILED"
-        | "HELD"
-        | "RELEASED"
-        | "REFUNDED"
+        | "pending"
+        | "processing"
+        | "paid"
+        | "accepted"
+        | "shipped"
+        | "delivered"
+        | "completed"
+        | "disputed"
+        | "cancelled"
+        | "refunded"
+        | "expired"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -588,34 +1034,23 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      account_status: [
-        "EMAIL_UNVERIFIED",
-        "EMAIL_VERIFIED",
-        "PENDING",
-        "APPROVED",
-        "REJECTED",
-        "SUSPENDED",
-      ],
-      app_role: ["admin", "user"],
-      condition_type: [
-        "CLIENT_APPROVAL",
-        "DELIVERY_CONFIRM",
-        "TIMER",
-        "CUSTOM",
-      ],
-      disbursement_status: ["PENDING", "PROCESSING", "COMPLETED", "FAILED"],
-      hold_status: ["ACTIVE", "RELEASED", "CANCELLED", "EXPIRED"],
-      kyc_status: ["DRAFT", "PENDING", "APPROVED", "REJECTED"],
-      payment_method: ["MPESA", "AIRTEL", "CARD"],
-      ticket_priority: ["LOW", "MEDIUM", "HIGH", "URGENT"],
-      ticket_status: ["OPEN", "IN_PROGRESS", "RESOLVED", "CLOSED"],
+      account_status: ["active", "suspended", "pending_verification"],
+      app_role: ["admin", "seller", "buyer"],
+      product_status: ["draft", "published", "archived"],
+      social_platform: ["instagram", "facebook", "linkedin"],
+      store_status: ["inactive", "active", "frozen"],
       transaction_status: [
-        "PENDING",
-        "SUCCESS",
-        "FAILED",
-        "HELD",
-        "RELEASED",
-        "REFUNDED",
+        "pending",
+        "processing",
+        "paid",
+        "accepted",
+        "shipped",
+        "delivered",
+        "completed",
+        "disputed",
+        "cancelled",
+        "refunded",
+        "expired",
       ],
     },
   },
